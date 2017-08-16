@@ -5,6 +5,11 @@
 CAStarNode::CAStarNode()
 {
 	parent = NULL;
+	f = 0;
+	g = 0;
+	h = 0;
+	loss = 1;
+	state = ASS_NONE;
 }
 
 CAStarImpl::CAStarImpl()

@@ -1,6 +1,5 @@
 #include "AStarTile.h"
-
-
+#include <time.h>
 
 CAStarTile::CAStarTile()
 {
@@ -15,16 +14,12 @@ void CAStarTile::Init(int width, int height)
 {
 	m_nWidth = width;
 	m_nHeight = height;
-	m_TileNode = new CAStarTileNode[width*height];
+	m_vecTileNode.resize(width*height);
 	for (int i = 0; i < width*height; i++)
 	{
-		m_TileNode[i].parent = 0;
-		m_TileNode[i].f = 0;
-		m_TileNode[i].g = 0;
-		m_TileNode[i].h = 0;
-		m_TileNode[i].index = i;
+		m_vecTileNode[i].index = i;
+		m_vecTileNode[i].loss = 10;
 	}
-
 	// 初始化所有节点的相邻节点
 	for (int row = 0; row < height; row++)
 	{
@@ -32,28 +27,28 @@ void CAStarTile::Init(int width, int height)
 		{
 			int nIndex = row*width + col;
 
-			CAStarTileNode *pNode = &m_TileNode[nIndex];
+			CAStarTileNode *pNode = &m_vecTileNode[nIndex];
 
 			// 上
 			if (row > 0)
 			{
-				pNode->neighbor.push_back(&m_TileNode[nIndex-width]);
+				pNode->neighbor.push_back(&m_vecTileNode[nIndex-width]);
 			}
 			// 下
 			if (row < height-1)
 			{
-				pNode->neighbor.push_back(&m_TileNode[nIndex + width]);
+				pNode->neighbor.push_back(&m_vecTileNode[nIndex + width]);
 			}
 
 			// 左
 			if (col > 0)
 			{
-				pNode->neighbor.push_back(&m_TileNode[nIndex - 1]);
+				pNode->neighbor.push_back(&m_vecTileNode[nIndex - 1]);
 			}
 			// 下
 			if (col < width - 1)
 			{
-				pNode->neighbor.push_back(&m_TileNode[nIndex + 1]);
+				pNode->neighbor.push_back(&m_vecTileNode[nIndex + 1]);
 			}
 		}
 	}
@@ -66,16 +61,15 @@ bool CAStarTile::Search(int sx, int sy, int ex, int ey)
 
 	for (int i = 0; i < m_nWidth*m_nHeight; i++)
 	{
-		m_TileNode[i].parent = 0;
-		m_TileNode[i].f = 0;
-		m_TileNode[i].g = 0;
-		m_TileNode[i].h = 0;
-		m_TileNode[i].state = 0;
-		m_TileNode[i].loss = rand()%10 == 0 ? -1 : 10;
+		m_vecTileNode[i].parent = 0;
+		m_vecTileNode[i].f = 0;
+		m_vecTileNode[i].g = 0;
+		m_vecTileNode[i].h = 0;
+		m_vecTileNode[i].state = 0;
 	}
-	m_TileNode[nStartIndex].loss = 10;
+	m_vecTileNode[nStartIndex].loss = 10;
 
-	return CAStarImpl::Search(&m_TileNode[nStartIndex], &m_TileNode[nEndIndex]);
+	return CAStarImpl::Search(&m_vecTileNode[nStartIndex], &m_vecTileNode[nEndIndex]);
 }
 
 int CAStarTile::Hn(CAStarNode *pEndNode, CAStarNode *pNode)
