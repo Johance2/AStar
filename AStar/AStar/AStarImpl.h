@@ -27,7 +27,7 @@ typedef CAStarNode* CAStarNodePtr;
 
 struct CAStarNodeComp {
 	bool operator()(const CAStarNodePtr &k1, const CAStarNodePtr &k2) const {
-		return k1->f > k2->f;
+		return k1->f < k2->f;
 	}
 };
 

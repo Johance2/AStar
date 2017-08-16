@@ -17,7 +17,7 @@ public:
 	void Init(int width, int height);
 	bool Search(int sx, int sy, int ex, int ey);
 
-	const std::vector<CAStarTileNode> &GetTileNode() { return m_vecTileNode;  }
+	std::vector<CAStarTileNode> &GetTileNode() { return m_vecTileNode;  }
 	
 protected:
 	virtual int Hn(CAStarNode *pEndNode, CAStarNode *pNode);

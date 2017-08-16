@@ -21,12 +21,16 @@ bool CTileMap::Init(int width, int height, int cell)
 
 void CTileMap::DrawMap(HDC hdc)
 {
+	POINT pt;
 	for (int x = 0; x < m_nWidth; x++)
 	{
-		for (int y = 0; y < m_nHeight; y++)
-		{
-			DrawTile(hdc, x, y);
-		}
+		MoveToEx(hdc, x * m_nCellSize, 0, &pt);
+		LineTo(hdc, x * m_nCellSize, m_nCellSize * m_nHeight);
+	}
+	for (int y = 0; y < m_nHeight; y++)
+	{
+		MoveToEx(hdc, 0, y * m_nCellSize, &pt);
+		LineTo(hdc, m_nWidth * m_nCellSize, y * m_nCellSize);
 	}
 }
 
@@ -40,10 +44,10 @@ void CTileMap::DrawTile(HDC hdc, int nIndex, HBRUSH hBrush)
 void CTileMap::DrawTile(HDC hdc, int x, int y, HBRUSH hBrush)
 {
 	RECT rc;
-	rc.left = x *m_nCellSize;
-	rc.top = y *m_nCellSize;
-	rc.right = rc.left + m_nCellSize;
-	rc.bottom = rc.top + m_nCellSize;
+	rc.left = x *m_nCellSize+2;
+	rc.top = y *m_nCellSize+2;
+	rc.right = rc.left + m_nCellSize-4;
+	rc.bottom = rc.top + m_nCellSize-4;
 
 	if (hBrush == 0)
 	{

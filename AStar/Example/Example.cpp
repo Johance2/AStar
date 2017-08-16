@@ -19,6 +19,10 @@ CAStarTile g_AStar;
 POINT g_Start;
 POINT g_End;
 
+HBRUSH g_GreenBrush;
+HBRUSH g_BlueBrush;
+HBRUSH g_RedBrush;
+
 // 此代码模块中包含的函数的前向声明: 
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -113,18 +117,35 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
-   g_Map.Init(128, 128, 6);
+   LOGBRUSH logBrush;
+   logBrush.lbColor = RGB(0, 0, 255);
+   logBrush.lbHatch = HS_CROSS;
+   logBrush.lbStyle = BS_SOLID;
+   g_GreenBrush = CreateBrushIndirect(&logBrush);
+   logBrush.lbColor = RGB(0, 255, 0);
+   g_BlueBrush = CreateBrushIndirect(&logBrush);
+   logBrush.lbColor = RGB(255, 0, 0);
+   g_RedBrush = CreateBrushIndirect(&logBrush);
+
+   g_Map.Init(20, 20, 30);
    g_AStar.Init(g_Map.GetWidth(), g_Map.GetHeight());
 
-   g_Start.x = 1;
+   g_Start.x = 0;
    g_Start.y = 0;
 
-   g_End.x = 0;
-   g_End.y = 0;
+   g_End.x = g_Map.GetWidth()-1;
+   g_End.y = g_Map.GetHeight()-1;
 
+   srand(GetTickCount());
+   auto &tiles = g_AStar.GetTileNode();
+   for (int i = 0; i < tiles.size(); i++)
+   {
+	   tiles[i].loss = rand() % 5 == 0 ? -1 : 10;
+   }
+   tiles[0].loss = 10;
+   tiles[tiles.size()-1].loss = 10;
    g_AStar.Search(g_Start.x, g_Start.y, g_End.x, g_End.y);
-      
-   RECT rc{0, 0, g_Map.GetWidth()*g_Map.GetCellSize(), g_Map.GetHeight()*g_Map.GetCellSize() };
+   RECT rc = {0, 0, g_Map.GetWidth()*g_Map.GetCellSize(), g_Map.GetHeight()*g_Map.GetCellSize() };
    AdjustWindowRect(&rc, GetWindowLong(hWnd, GWL_STYLE), true);
    SetWindowPos(hWnd, NULL, 0, 0, rc.right-rc.left, rc.bottom-rc.top, SWP_NOMOVE | SWP_NOZORDER);
    ShowWindow(hWnd, nCmdShow);
@@ -170,11 +191,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 在此处添加使用 hdc 的任何绘图代码...
 			g_Map.DrawMap(hdc);
+			
+			auto tiles = g_AStar.GetTileNode();
+			for (int i = 0; i < tiles.size(); i++)
+			{
+				auto &tile = tiles[i];
+				if (tile.loss == -1)
+				{
+					g_Map.DrawTile(hdc, tile.index, g_BlueBrush);
+				}
+			}
+
 			auto listPath = g_AStar.GetPath();
 			for (auto itr = listPath.begin(); itr != listPath.end(); ++itr)
 			{
-				int nIndex = ((CAStarTileNode*)(*itr))->index; 
-				g_Map.DrawTile(hdc, nIndex, (HBRUSH)GetStockObject(DKGRAY_BRUSH));
+				int nIndex = ((CAStarTileNode*)(*itr))->index;
+				g_Map.DrawTile(hdc, nIndex, g_GreenBrush);
 			}
             EndPaint(hWnd, &ps);
         }

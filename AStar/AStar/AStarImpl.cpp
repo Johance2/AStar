@@ -98,8 +98,18 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 					pNextNode->f = f;
 
 					auto itr2 = m_setOpen.find(pNextNode);
-					m_setOpen.erase(itr2);
-					AddToOpen(pNextNode);
+					// 因为返回的是 value 相同的第一个 迭代器，所以需要遍历后面了
+					while (itr2 != m_setOpen.end() && (*itr2)->f == pNextNode->f)
+					{
+						if (*itr2 == pNextNode)
+						{
+							m_setOpen.erase(itr2);
+							AddToOpen(pNextNode);
+							break;
+						}
+
+						++itr2;
+					}
 				}
 			}
 			// 如果不在打开列表 则添加该节点

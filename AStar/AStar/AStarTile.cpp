@@ -67,7 +67,6 @@ bool CAStarTile::Search(int sx, int sy, int ex, int ey)
 		m_vecTileNode[i].h = 0;
 		m_vecTileNode[i].state = 0;
 	}
-	m_vecTileNode[nStartIndex].loss = 10;
 
 	return CAStarImpl::Search(&m_vecTileNode[nStartIndex], &m_vecTileNode[nEndIndex]);
 }
