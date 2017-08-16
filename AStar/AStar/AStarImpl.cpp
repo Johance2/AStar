@@ -24,7 +24,7 @@ bool UDgreater(CAStarNode *elem1, CAStarNode *elem2)
 bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 {
 	m_listPath.clear();
-	m_listOpen.clear();
+	m_setOpen.clear();
 
 	pStart->g = 0;
 	pStart->h = Hn(pEnd, pStart);
@@ -36,13 +36,12 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 	// 有打开的节点就一直寻直到走到终点，或者没有点了
 	while (!bFind)
 	{
-		if (m_listOpen.size() == 0)
+		if (m_setOpen.size() == 0)
 			break;
 
-		m_listOpen.sort(UDgreater);
 		// 每次都取第一个 第一个永远是最好的
-		CAStarNode *pCurrentNode = m_listOpen.front();
-		m_listOpen.pop_front();
+		CAStarNode *pCurrentNode = *m_setOpen.begin();
+		m_setOpen.erase(m_setOpen.begin());
 		AddToClose(pCurrentNode);
 
 		// 给相邻节点计算期望值
@@ -60,7 +59,7 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 				CAStarNode *pParend = pNextNode;
 				while (pParend)
 				{
-					m_listPath.push_back(pParend);
+					m_listPath.push_front(pParend);
 					pParend = pParend->parent;
 				}
 				bFind = true;
@@ -73,8 +72,13 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 				continue;
 			}
 
-			int g = Gn(pCurrentNode, pNextNode);
 			int h = Hn(pEnd, pNextNode);
+			if (h == -1)
+			{
+				AddToClose(pCurrentNode);
+				continue;
+			}
+			int g = Gn(pCurrentNode, pNextNode);
 			int f = g + h;
 
 			// 如果在打开列表 则更新该节点的期望值
@@ -87,6 +91,10 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 					pNextNode->g = g;
 					pNextNode->h = h;
 					pNextNode->f = f;
+
+					auto itr2 = m_setOpen.find(pNextNode);
+					m_setOpen.erase(itr2);
+					AddToOpen(pNextNode);
 				}
 			}
 			// 如果不在打开列表 则添加该节点
@@ -111,7 +119,7 @@ const std::list<CAStarNode*> &CAStarImpl::GetPath()
 
 int CAStarImpl::Gn(CAStarNode *pPrevNode, CAStarNode *pNode)
 {
-	return pPrevNode->g + 1;
+	return pPrevNode->g + pNode->loss;
 }
 
 int CAStarImpl::Hn(CAStarNode *pEndNode, CAStarNode *pNode)
@@ -122,7 +130,7 @@ int CAStarImpl::Hn(CAStarNode *pEndNode, CAStarNode *pNode)
 void CAStarImpl::AddToOpen(CAStarNode *pNode)
 {
 	pNode->state = ASS_OPEN;
-	m_listOpen.push_back(pNode);
+	m_setOpen.insert(pNode);
 }
 
 void CAStarImpl::AddToClose(CAStarNode *pNode)

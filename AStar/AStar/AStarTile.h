@@ -17,8 +17,6 @@ public:
 	bool Search(int sx, int sy, int ex, int ey);
 
 protected:
-	// ¼ÆËãÏûºÄÖµ
-	virtual int Gn(CAStarNode *pPrevNode, CAStarNode *pNode);
 	virtual int Hn(CAStarNode *pEndNode, CAStarNode *pNode);
 
 	CAStarTileNode *m_TileNode;

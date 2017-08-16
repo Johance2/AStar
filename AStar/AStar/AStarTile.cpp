@@ -71,18 +71,19 @@ bool CAStarTile::Search(int sx, int sy, int ex, int ey)
 		m_TileNode[i].g = 0;
 		m_TileNode[i].h = 0;
 		m_TileNode[i].state = 0;
+		m_TileNode[i].loss = rand()%10 == 0 ? -1 : 10;
 	}
-	return CAStarImpl::Search(&m_TileNode[nStartIndex], &m_TileNode[nEndIndex]);
-}
+	m_TileNode[nStartIndex].loss = 10;
 
-// ¼ÆËãÏûºÄÖµ
-int CAStarTile::Gn(CAStarNode *pPrevNode, CAStarNode *pNode)
-{
-	return pPrevNode->g + 10;
+	return CAStarImpl::Search(&m_TileNode[nStartIndex], &m_TileNode[nEndIndex]);
 }
 
 int CAStarTile::Hn(CAStarNode *pEndNode, CAStarNode *pNode)
 {
+	if (pNode->loss == -1)
+	{
+		return -1;
+	}
 	int nIndex1 = ((CAStarTileNode*)pNode)->index;
 	int nIndex2 = ((CAStarTileNode*)pEndNode)->index;
 

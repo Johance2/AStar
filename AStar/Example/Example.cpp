@@ -113,7 +113,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
-   g_Map.Init();
+   g_Map.Init(128, 128, 6);
    g_AStar.Init(g_Map.GetWidth(), g_Map.GetHeight());
 
    g_Start.x = 1;
@@ -124,7 +124,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    g_AStar.Search(g_Start.x, g_Start.y, g_End.x, g_End.y);
       
-   RECT rc{0, 0, 500, 500};
+   RECT rc{0, 0, g_Map.GetWidth()*g_Map.GetCellSize(), g_Map.GetHeight()*g_Map.GetCellSize() };
    AdjustWindowRect(&rc, GetWindowLong(hWnd, GWL_STYLE), true);
    SetWindowPos(hWnd, NULL, 0, 0, rc.right-rc.left, rc.bottom-rc.top, SWP_NOMOVE | SWP_NOZORDER);
    ShowWindow(hWnd, nCmdShow);
@@ -175,9 +175,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				int nIndex = ((CAStarTileNode*)(*itr))->index; 
 				g_Map.DrawTile(hdc, nIndex, (HBRUSH)GetStockObject(DKGRAY_BRUSH));
-				char szTemp[100];
-				sprintf(szTemp, "%d,%d\n", nIndex%g_Map.GetWidth(), nIndex/g_Map.GetWidth());
-				OutputDebugStringA(szTemp);
 			}
             EndPaint(hWnd, &ps);
         }
@@ -189,8 +186,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		g_Start.x = xPos / g_Map.GetCellSize();
 		g_Start.y = yPos / g_Map.GetCellSize();
-
+		DWORD dwTime = GetTickCount();
 		g_AStar.Search(g_Start.x, g_Start.y, g_End.x, g_End.y);
+		char szTemp[100];
+		sprintf(szTemp, "%d\n", GetTickCount() - dwTime);
+		OutputDebugStringA(szTemp);
+
 		InvalidateRect(hWnd, NULL, true);
 	}
 	break;
@@ -202,7 +203,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		g_End.x = xPos / g_Map.GetCellSize();
 		g_End.y = yPos / g_Map.GetCellSize();
 
+		DWORD dwTime = GetTickCount();
 		g_AStar.Search(g_Start.x, g_Start.y, g_End.x, g_End.y);
+		char szTemp[100];
+		sprintf(szTemp, "%d\n", GetTickCount() - dwTime);
+		OutputDebugStringA(szTemp);
 		InvalidateRect(hWnd, NULL, true);
 	}
 	break;
