@@ -5,8 +5,8 @@
 #include "../AStar/AStarTile.h"
 using namespace std;
 
-#define MAP_WIDTH (50)
-#define MAP_HEIGHT (50)
+#define MAP_WIDTH (1024)
+#define MAP_HEIGHT (1024)
 #define TEST_COUNT (100)
 
 int main()

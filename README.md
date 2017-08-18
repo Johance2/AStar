@@ -1,2 +1,10 @@
-# AStar
-A AStar algorithm library
+关于A星算法
+
+astar(a星)最短路径寻路算法，在游戏里面运用比较多，具体算法说明可参考这篇博文，里面讲得很仔细，也很生动：http://www.imsiren.com/archives/960，关键点：
+
+将方块S添加到open列表中。
+将S从open列表移除，然后添加S到closed列表中。
+对于与S相邻的每一块可通行的方块T：
+如果T在closed列表中：不管它。
+如果T不在open列表中：计算出它的F,G,H值，并且将T的父节点设置为S，并将T添加到open列表中。
+如果T已经在open列表中：检查G值是否更小。如果是，则更新它的F,G,H值，并且将T的父节点设置为S。

@@ -31,6 +31,9 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 	m_listPath.clear();
 	m_setOpen.clear();
 
+	if(pEnd->loss == -1)
+		return false;
+
 	pStart->g = 0;
 	pStart->h = Hn(pStart, NULL, pEnd);
 	pStart->f = pStart->g + pStart->h;
