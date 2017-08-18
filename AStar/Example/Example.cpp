@@ -224,7 +224,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		sprintf(szTemp, "%d\n", GetTickCount() - dwTime);
 		OutputDebugStringA(szTemp);
 
-		InvalidateRect(hWnd, NULL, true);
+		InvalidateRect(hWnd, NULL, false);
 	}
 	break;
 	case WM_RBUTTONDOWN:
@@ -240,7 +240,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		char szTemp[100];
 		sprintf(szTemp, "%d\n", GetTickCount() - dwTime);
 		OutputDebugStringA(szTemp);
-		InvalidateRect(hWnd, NULL, true);
+		InvalidateRect(hWnd, NULL, false);
 	}
 	break;
     case WM_DESTROY:

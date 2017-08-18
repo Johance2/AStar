@@ -20,7 +20,7 @@ public:
 	std::vector<CAStarTileNode> &GetTileNode() { return m_vecTileNode;  }
 	
 protected:
-	virtual int Hn(CAStarNode *pEndNode, CAStarNode *pNode);
+	virtual int Hn(CAStarNode *pCurrentNode, CAStarNode *pPrevNode, CAStarNode *pEndNode);
 
 	std::vector<CAStarTileNode> m_vecTileNode;
 	int m_nWidth;

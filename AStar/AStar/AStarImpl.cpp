@@ -32,7 +32,7 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 	m_setOpen.clear();
 
 	pStart->g = 0;
-	pStart->h = Hn(pEnd, pStart);
+	pStart->h = Hn(pStart, NULL, pEnd);
 	pStart->f = pStart->g + pStart->h;
 	pStart->parent = 0;
 
@@ -57,7 +57,7 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 			if (pNextNode == pEnd)
 			{
 				pNextNode->g = Gn(pCurrentNode, pNextNode);
-				pNextNode->h = Hn(pEnd, pNextNode);
+				pNextNode->h = Hn(pNextNode, pCurrentNode, pEnd);
 				pNextNode->f = pNextNode->g + pNextNode->h;
 				pNextNode->parent = pCurrentNode;
 
@@ -77,7 +77,7 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 				continue;
 			}
 
-			int h = Hn(pEnd, pNextNode);
+			int h = Hn(pNextNode, pCurrentNode, pEnd);
 			if (h == -1)
 			{
 				AddToClose(pCurrentNode);
@@ -137,7 +137,7 @@ int CAStarImpl::Gn(CAStarNode *pPrevNode, CAStarNode *pNode)
 	return pPrevNode->g + pNode->loss;
 }
 
-int CAStarImpl::Hn(CAStarNode *pEndNode, CAStarNode *pNode)
+int CAStarImpl::Hn(CAStarNode *pCurrentNode, CAStarNode *pPrevNode, CAStarNode *pEndNode)
 {
 	return 0;
 }

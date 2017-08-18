@@ -44,7 +44,7 @@ protected:
 	// 深度
 	virtual int Gn(CAStarNode *pPrevNode, CAStarNode *pNode);
 	// 启发函数 如果返回值为 -1 表示 不可用
-	virtual int Hn(CAStarNode *pEndNode, CAStarNode *pNode);
+	virtual int Hn(CAStarNode *pCurrentNode, CAStarNode *pPrevNode, CAStarNode *pEndNode);
 
 private:
 	void AddToOpen(CAStarNode *pNode);

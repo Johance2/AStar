@@ -71,13 +71,13 @@ bool CAStarTile::Search(int sx, int sy, int ex, int ey)
 	return CAStarImpl::Search(&m_vecTileNode[nStartIndex], &m_vecTileNode[nEndIndex]);
 }
 
-int CAStarTile::Hn(CAStarNode *pEndNode, CAStarNode *pNode)
+int CAStarTile::Hn(CAStarNode *pCurrentNode, CAStarNode *pPrevNode, CAStarNode *pEndNode)
 {
-	if (pNode->loss == -1)
+	if (pCurrentNode->loss == -1)
 	{
 		return -1;
 	}
-	int nIndex1 = ((CAStarTileNode*)pNode)->index;
+	int nIndex1 = ((CAStarTileNode*)pCurrentNode)->index;
 	int nIndex2 = ((CAStarTileNode*)pEndNode)->index;
 
 	int nRow1 = nIndex1 / m_nWidth;

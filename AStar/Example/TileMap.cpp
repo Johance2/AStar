@@ -21,6 +21,8 @@ bool CTileMap::Init(int width, int height, int cell)
 
 void CTileMap::DrawMap(HDC hdc)
 {
+	RECT rc = {0, 0, m_nCellSize*m_nWidth, m_nCellSize*m_nHeight};
+	FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
 	POINT pt;
 	for (int x = 0; x < m_nWidth; x++)
 	{
