@@ -93,7 +93,7 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 			if (IsInOpen(pNextNode))
 			{
 				// 消耗比较少则使用它
-				if (pNextNode->f < f)
+				if (f < pNextNode->f)
 				{
 					pNextNode->parent = pCurrentNode;
 					pNextNode->g = g;
