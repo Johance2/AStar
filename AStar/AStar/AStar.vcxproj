@@ -158,16 +158,16 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\Dev\OSChina\qt-bike-fitting\Tools\Toolset\dep\tinyxml2\tinyxml2.h" />
     <ClInclude Include="AStarGate.h" />
     <ClInclude Include="AStarImpl.h" />
     <ClInclude Include="AStarTile.h" />
+    <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\Dev\OSChina\qt-bike-fitting\Tools\Toolset\dep\tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="AStarGate.cpp" />
     <ClCompile Include="AStarImpl.cpp" />
     <ClCompile Include="AStarTile.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

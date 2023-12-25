@@ -112,6 +112,30 @@ bool CAStarGate::Search(int sx, int sy, int ex, int ey)
 		m_vecNode[i]->h = 0;
 		m_vecNode[i]->state = 0;
 	}
+	int start_province, end_province;
+	{
+		int x = sx / m_tileSize;
+		int y = sy / m_tileSize;
+		int index = y * m_nWidth + x;
+		start_province = m_data[index];
+	}
+	{
+		int x = ex / m_tileSize;
+		int y = ey / m_tileSize;
+		int index = y * m_nWidth + x;
+		end_province = m_data[index];
+	}
+	if (start_province == end_province)
+	{
+		m_startNode.x = sx;
+		m_startNode.y = sy;
+		m_endNode.x = ex;
+		m_endNode.y = ey;
+		m_listPath.clear();
+		m_listPath.push_back(&m_startNode);
+		m_listPath.push_back(&m_endNode);
+		return true;
+	}
 
 	{
 		m_startNode.parent = 0;
@@ -122,12 +146,8 @@ bool CAStarGate::Search(int sx, int sy, int ex, int ey)
 		m_startNode.neighbor.clear();
 		m_startNode.x = sx;
 		m_startNode.y = sy;
-		int x = sx / m_tileSize;
-		int y = sy / m_tileSize;
-		int index = y * m_nWidth + x;
-		int province = m_data[index];
 
-		auto& nodes = mapProvinceNode[province];
+		auto& nodes = mapProvinceNode[start_province];
 		for (auto itr = nodes.begin(); itr != nodes.end(); ++itr)
 		{
 			Neighbor neighbor;
@@ -143,12 +163,8 @@ bool CAStarGate::Search(int sx, int sy, int ex, int ey)
 		m_endNode.g = 0;
 		m_endNode.h = 0;
 		m_endNode.state = 0;
-		int x = ex / m_tileSize;
-		int y = ey / m_tileSize;
-		int index = y * m_nWidth + x;
-		int province = m_data[index];
 
-		auto& nodes = mapProvinceNode[province];
+		auto& nodes = mapProvinceNode[end_province];
 		for (auto itr = nodes.begin(); itr != nodes.end(); ++itr)
 		{
 			Neighbor neighbor;

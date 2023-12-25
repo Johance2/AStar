@@ -27,7 +27,7 @@
     <ClInclude Include="AStarGate.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\Dev\OSChina\qt-bike-fitting\Tools\Toolset\dep\tinyxml2\tinyxml2.h">
+    <ClInclude Include="tinyxml2.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="AStarGate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\Dev\OSChina\qt-bike-fitting\Tools\Toolset\dep\tinyxml2\tinyxml2.cpp">
+    <ClCompile Include="tinyxml2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

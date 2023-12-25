@@ -8,7 +8,7 @@ using namespace std;
 
 #define MAP_WIDTH (600)
 #define MAP_HEIGHT (600)
-#define TEST_COUNT (1)
+#define TEST_COUNT (20)
 
 int main()
 {
@@ -39,13 +39,15 @@ int main()
 		float nTotalTime = 0;
 		int count = TEST_COUNT;
 		DWORD dwTime = GetTickCount();
+		srand(GetTickCount());
 		CAStarGate gate;
 		gate.Init(".\\TileMap\\map_1_1.tmx");
 		while (count--)
 		{
-			if (gate.Search(10, 10, 2500, 2500))
+			if (gate.Search(rand()%2700, rand() % 2700, rand() % 2700, rand() % 2700))
 			{
 				gate.GetPath();
+				cout << endl;
 				for (auto itr = gate.GetPath().begin(); itr != gate.GetPath().end(); ++itr)
 				{
 					cout << ((CAStarGateNode*)(*itr))->x << "," << ((CAStarGateNode*)(*itr))->y << endl;
