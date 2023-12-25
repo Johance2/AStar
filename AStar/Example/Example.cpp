@@ -127,7 +127,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    logBrush.lbColor = RGB(255, 0, 0);
    g_RedBrush = CreateBrushIndirect(&logBrush);
 
-   int nSize = 600;
+   int nSize = 64;
 
    g_Map.Init(nSize, nSize, 600/ nSize);
    g_AStar.Init(g_Map.GetWidth(), g_Map.GetHeight(), true);
