@@ -14,7 +14,7 @@ class CAStarTile :
 public:
 	CAStarTile();
 	~CAStarTile();
-	void Init(int width, int height);
+	void Init(int width, int height, bool bEnable45 = false);
 	bool Search(int sx, int sy, int ex, int ey);
 
 	std::vector<CAStarTileNode> &GetTileNode() { return m_vecTileNode;  }

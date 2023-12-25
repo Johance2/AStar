@@ -10,7 +10,7 @@ CAStarTile::~CAStarTile()
 {
 }
 
-void CAStarTile::Init(int width, int height)
+void CAStarTile::Init(int width, int height, bool bEnable45 /*= false*/)
 {
 	m_nWidth = width;
 	m_nHeight = height;
@@ -18,7 +18,8 @@ void CAStarTile::Init(int width, int height)
 	for (int i = 0; i < width*height; i++)
 	{
 		m_vecTileNode[i].index = i;
-		m_vecTileNode[i].loss = 10;
+		m_vecTileNode[i].loss = 0;
+		m_vecTileNode[i].neighbor.clear();
 	}
 	// 初始化所有节点的相邻节点
 	for (int row = 0; row < height; row++)
@@ -29,26 +30,70 @@ void CAStarTile::Init(int width, int height)
 
 			CAStarTileNode *pNode = &m_vecTileNode[nIndex];
 
+			Neighbor neighbor;
+			// 左
+			if (col > 0)
+			{
+				neighbor.loss = 10;
+				neighbor.node = &m_vecTileNode[nIndex -1];
+				pNode->neighbor.push_back(neighbor);
+			}
+			// 右
+			if (col < width - 1)
+			{
+				neighbor.loss = 10;
+				neighbor.node = &m_vecTileNode[nIndex +1];
+				pNode->neighbor.push_back(neighbor);
+			}
 			// 上
 			if (row > 0)
 			{
-				pNode->neighbor.push_back(&m_vecTileNode[nIndex-width]);
+				neighbor.loss = 10;
+				neighbor.node = &m_vecTileNode[nIndex-width];
+				pNode->neighbor.push_back(neighbor);
+
+				if(bEnable45)
+				{
+					// 左
+					if (col > 0)
+					{
+						neighbor.loss = 14;
+						neighbor.node = &m_vecTileNode[nIndex - 1- width];
+						pNode->neighbor.push_back(neighbor);
+					}
+					// 右
+					if (col < width - 1)
+					{
+						neighbor.loss = 14;
+						neighbor.node = &m_vecTileNode[nIndex + 1- width];
+						pNode->neighbor.push_back(neighbor);
+					}
+				}
 			}
 			// 下
 			if (row < height-1)
 			{
-				pNode->neighbor.push_back(&m_vecTileNode[nIndex + width]);
-			}
+				neighbor.loss = 10;
+				neighbor.node = &m_vecTileNode[nIndex + width];
+				pNode->neighbor.push_back(neighbor);
 
-			// 左
-			if (col > 0)
-			{
-				pNode->neighbor.push_back(&m_vecTileNode[nIndex - 1]);
-			}
-			// 下
-			if (col < width - 1)
-			{
-				pNode->neighbor.push_back(&m_vecTileNode[nIndex + 1]);
+				if(bEnable45)
+				{
+					// 左
+					if (col > 0)
+					{
+						neighbor.loss = 14;
+						neighbor.node = &m_vecTileNode[nIndex - 1+ width];
+						pNode->neighbor.push_back(neighbor);
+					}
+					// 右
+					if (col < width - 1)
+					{
+						neighbor.loss = 14;
+						neighbor.node = &m_vecTileNode[nIndex + 1+ width];
+						pNode->neighbor.push_back(neighbor);
+					}
+				}
 			}
 		}
 	}

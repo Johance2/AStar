@@ -9,17 +9,26 @@ enum AStarNodeState
 	ASS_OPEN,
 	ASS_CLOSE,
 };
+
+class CAStarNode;
+
+struct Neighbor
+{
+	int loss; //
+	CAStarNode *node;
+};
+
 // AStar算法的节点
 class CAStarNode
 {
 public:
 	CAStarNode();
-	CAStarNode *parent; // 上一个节点
-	std::list<CAStarNode*> neighbor; // 相邻的节点
+	std::list<Neighbor> neighbor; // 相邻的节点
+	CAStarNode* parent; // 上一个节点
 	int f; // 评估值
 	int g; // 实际消耗
 	int h; // 预计消耗return false;
-	int loss; // 消耗值 如果为-1 表示不可行走
+	int loss; // 主档消耗值 如果为-1 表示不可行走
 	char state;
 }; 
 

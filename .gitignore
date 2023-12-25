@@ -1,0 +1,9 @@
+x64
+Debug
+Release
+*.pdb
+*.lib
+*.idb
+*.exe
+*.vs
+*.user

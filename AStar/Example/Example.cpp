@@ -127,20 +127,29 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    logBrush.lbColor = RGB(255, 0, 0);
    g_RedBrush = CreateBrushIndirect(&logBrush);
 
-   g_Map.Init(20, 20, 30);
-   g_AStar.Init(g_Map.GetWidth(), g_Map.GetHeight());
+   int nSize = 600;
+
+   g_Map.Init(nSize, nSize, 600/ nSize);
+   g_AStar.Init(g_Map.GetWidth(), g_Map.GetHeight(), true);
 
    g_Start.x = 0;
    g_Start.y = 0;
+
 
    g_End.x = g_Map.GetWidth()-1;
    g_End.y = g_Map.GetHeight()-1;
 
    srand(GetTickCount());
    auto &tiles = g_AStar.GetTileNode();
+
+   //for (int i = 3; i < 31; i++)
+   //{
+   //    tiles[i].loss = -1;
+   //}
+
    for (int i = 0; i < tiles.size(); i++)
    {
-	   tiles[i].loss = rand() % 5 == 0 ? -1 : 10;
+	   tiles[i].loss = rand() % 3 == 0 ? -1 : 10;
    }
    tiles[0].loss = 10;
    tiles[tiles.size()-1].loss = 10;

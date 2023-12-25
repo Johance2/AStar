@@ -31,6 +31,11 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 	m_listPath.clear();
 	m_setOpen.clear();
 
+	if (pStart == pEnd)
+	{
+		return true;
+	}
+
 	if(pEnd->loss == -1)
 		return false;
 
@@ -55,11 +60,11 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 		// 给相邻节点计算期望值
 		for (auto itr = pCurrentNode->neighbor.begin(); itr != pCurrentNode->neighbor.end(); ++itr)
 		{
-			CAStarNode *pNextNode = *itr;
+			CAStarNode *pNextNode = (*itr).node;
 			// 到达终点
 			if (pNextNode == pEnd)
 			{
-				pNextNode->g = Gn(pCurrentNode, pNextNode);
+				pNextNode->g = Gn(pCurrentNode, pNextNode) + (*itr).loss;
 				pNextNode->h = Hn(pNextNode, pCurrentNode, pEnd);
 				pNextNode->f = pNextNode->g + pNextNode->h;
 				pNextNode->parent = pCurrentNode;
@@ -69,6 +74,8 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 				{
 					m_listPath.push_front(pParend);
 					pParend = pParend->parent;
+					if (m_listPath.size() > 9999)
+						break;
 				}
 				bFind = true;
 				break;
@@ -86,7 +93,7 @@ bool CAStarImpl::Search(CAStarNode *pStart, CAStarNode *pEnd)
 				AddToClose(pCurrentNode);
 				continue;
 			}
-			int g = Gn(pCurrentNode, pNextNode);
+			int g = Gn(pCurrentNode, pNextNode)+(*itr).loss;
 			int f = g + h;
 
 			// 如果在打开列表 则更新该节点的期望值
